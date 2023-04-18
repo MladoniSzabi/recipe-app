@@ -1,0 +1,56 @@
+body {
+	background-color: #111618;
+	color: white;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+	gap: 0.5em;
+}
+
+.row {
+	padding: 1rem;
+	display: flex;
+	justify-content: space-between;
+	gap: 1em;
+	background-color: #223036;
+	border-radius: 20px;
+	align-items: center;
+}
+
+.row .body {
+	flex-grow: 1;
+}
+
+img {
+	height: 5em;
+}
+
+.buttons {
+	display: flex;
+	flex-direction: column;
+	width: 10%;
+	max-width: 10em;
+	flex-shrink: 0;
+}
+
+.buttons button {
+	all: unset;
+	border: solid 1px black;
+	border-radius: 3px;
+	height: 50%;
+	text-align: center;
+	background-color: #315851;
+	cursor: pointer;
+	padding: 1em;
+	min-width: max-content;
+}
+
+button:hover {
+	background-color: #406159;
+}
+
+button:active {
+	background-color: #476A64;
+}
