@@ -1,13 +1,31 @@
 import * as React from 'react'
 
+type RecipeList = { id: number, name: string, ingredient: string, method: string }[]
+
 export default function IndexPage() {
+
+    const [recipes, setRecipes] = React.useState<RecipeList>([])
+
+    React.useEffect(() => {
+        fetch('/api/RecipeItems')
+            .then((res) => res.json())
+            .then((data) => {
+                setRecipes(data)
+            })
+    }, [])
+
+    if (recipes.length == 0) {
+        return <main>
+            <p>Loading...</p>
+        </main>
+    }
+
     return <main>
-        {Array.from(new Array(10)).map(() => (<div className="row">
+        {recipes.map((el) => (<div className="row">
             <img src="/img.png" alt="image go brrr" />
-            <p className="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <p className="body">{el.name}</p>
             <div className="buttons">
-                <button>Button 1</button>
-                <button>Button 2</button>
+                <button>Vote</button>
             </div>
         </div>))}
     </main>
