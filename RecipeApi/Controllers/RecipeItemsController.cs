@@ -20,11 +20,37 @@ namespace RecipeApi.Controllers
             _context = context;
         }
 
+
+
+        [HttpPost("vote/{id}")]
+        public async Task<IActionResult> VoteForRecipe(long id)
+        {
+            var recipeItem = await _context.RecipeItems.FindAsync(id);
+
+            if (recipeItem == null)
+            {
+                return NotFound();
+            }
+
+            Vote v = new Vote();
+            v.Recipe = recipeItem;
+            _context.Votes.Add(v);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("Created Vote", new { id = v.Id }, v);
+        }
+
         // GET: api/RecipeItems
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<RecipeItem>>> GetRecipeItems()
+        public async Task<ActionResult<IEnumerable<RecipeWithVotes>>> GetRecipeItems()
         {
-            return await _context.RecipeItems.ToListAsync();
+            var results = from recipe in _context.RecipeItems
+                          join vote in _context.Votes on recipe equals vote.Recipe into votes
+                          from vote in votes.DefaultIfEmpty()
+                          group vote by recipe into recipeGroup
+                          select new RecipeWithVotes(recipeGroup.Key, recipeGroup.Count(v => v != null));
+
+            return await results.ToListAsync();
         }
 
         // GET: api/RecipeItems/5
