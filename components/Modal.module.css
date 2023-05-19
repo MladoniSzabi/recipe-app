@@ -1,0 +1,22 @@
+.modal-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000000aa;
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #111618;
+    padding: 1em;
+    border-radius: 20px;
+}
+
+.modal-hidden {
+    display: none;
+}

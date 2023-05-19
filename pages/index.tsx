@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { RecipeItemComponent, RecipeItem } from '../components/RecipeItem'
+import Modal from '../components/Modal'
 
 export default function IndexPage() {
 
@@ -29,8 +30,11 @@ export default function IndexPage() {
         </header>
         <main>
             {recipes.map((el) => (
-                <RecipeItemComponent item={el} />
+                <RecipeItemComponent key={el.id} item={el} />
             ))}
         </main>
+        <Modal>
+            <p>ASDASD</p>
+        </Modal>
     </>
 }
