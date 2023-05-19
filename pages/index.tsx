@@ -1,10 +1,9 @@
 import * as React from 'react'
-
-type RecipeList = { id: number, name: string, ingredient: string, method: string }[]
+import { RecipeItemComponent, RecipeItem } from '../components/RecipeItem'
 
 export default function IndexPage() {
 
-    const [recipes, setRecipes] = React.useState<RecipeList>([])
+    const [recipes, setRecipes] = React.useState<RecipeItem[]>([])
 
     React.useEffect(() => {
         fetch('/api/RecipeItems')
@@ -20,13 +19,18 @@ export default function IndexPage() {
         </main>
     }
 
-    return <main>
-        {recipes.map((el) => (<div className="row">
-            <img src="/img.png" alt="image go brrr" />
-            <p className="body">{el.name}</p>
-            <div className="buttons">
-                <button>Vote</button>
-            </div>
-        </div>))}
-    </main>
+    return <>
+        <header>
+            <button>
+                <span className="material-symbols-outlined">
+                    add
+                </span>
+            </button>
+        </header>
+        <main>
+            {recipes.map((el) => (
+                <RecipeItemComponent item={el} />
+            ))}
+        </main>
+    </>
 }

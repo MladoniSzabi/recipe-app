@@ -1,0 +1,45 @@
+.recipe-item {
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1em;
+    background-color: #223036;
+    border-radius: 20px;
+    align-items: center;
+}
+
+.recipe-item .body {
+    flex-grow: 1;
+}
+
+.recipe-item img {
+    height: 5em;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    width: 10%;
+    max-width: 10em;
+    flex-shrink: 0;
+}
+
+.buttons button {
+    all: unset;
+    border: solid 1px black;
+    border-radius: 3px;
+    height: 50%;
+    text-align: center;
+    background-color: #315851;
+    cursor: pointer;
+    padding: 1em;
+    min-width: max-content;
+}
+
+.buttons button:hover {
+    background-color: #406159;
+}
+
+.buttons button:active {
+    background-color: #476A64;
+}
