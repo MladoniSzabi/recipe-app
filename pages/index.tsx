@@ -1,10 +1,12 @@
 import * as React from 'react'
 import { RecipeItemComponent, RecipeItem } from '../components/RecipeItem'
 import Modal from '../components/Modal'
+import CreateRecipeForm from '../components/CreateRecipeForm'
 
 export default function IndexPage() {
 
     const [recipes, setRecipes] = React.useState<RecipeItem[]>([])
+    const [showCreateRecipeModal, setShowRecipeModal] = React.useState(false)
 
     React.useEffect(() => {
         fetch('/api/RecipeItems')
@@ -22,7 +24,7 @@ export default function IndexPage() {
 
     return <>
         <header>
-            <button>
+            <button onClick={() => { setShowRecipeModal(true) }}>
                 <span className="material-symbols-outlined">
                     add
                 </span>
@@ -33,8 +35,8 @@ export default function IndexPage() {
                 <RecipeItemComponent key={el.id} item={el} />
             ))}
         </main>
-        <Modal>
-            <p>ASDASD</p>
+        <Modal visible={showCreateRecipeModal}>
+            <CreateRecipeForm />
         </Modal>
     </>
 }

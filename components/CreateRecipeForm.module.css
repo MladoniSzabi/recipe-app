@@ -1,0 +1,9 @@
+.create-recipe form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1em;
+}
+
+.create-recipe button {
+    margin-top: 1em;
+}
