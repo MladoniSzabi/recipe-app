@@ -36,7 +36,7 @@ export default function IndexPage() {
             ))}
         </main>
         <Modal visible={showCreateRecipeModal}>
-            <CreateRecipeForm />
+            <CreateRecipeForm onFinished={() => { setShowRecipeModal(false) }} />
         </Modal>
     </>
 }
