@@ -10,13 +10,24 @@ export default function IndexPage() {
     const [showCreateRecipeModal, setShowRecipeModal] = React.useState(false)
     const [authToken] = useAuth()
 
-    console.log(authToken)
+    function onVote(itemId: number) {
+        let recipeItem = recipes.find((recipe) => { console.log(recipe); return recipe.id == itemId; })
+        recipeItem.votes += 1
+        setRecipes((oldRecipes) => oldRecipes.map(el => el.id == itemId ? recipeItem : el))
+    }
 
     React.useEffect(() => {
         fetch('/api/RecipeItems')
             .then((res) => res.json())
             .then((data) => {
-                setRecipes(data)
+                setRecipes(data.map((el) => (
+                    {
+                        id: el.recipe.id,
+                        name: el.recipe.name,
+                        ingredient: el.recipe.ingredient,
+                        method: el.recipe.method,
+                        votes: el.voteCount
+                    })))
             })
     }, [])
 
@@ -36,11 +47,11 @@ export default function IndexPage() {
         </header>
         <main>
             {recipes.map((el) => (
-                <RecipeItemComponent key={el.id} item={el} />
+                <RecipeItemComponent onVote={onVote} key={el.id} item={el} />
             ))}
+            <Modal visible={showCreateRecipeModal}>
+                <CreateRecipeForm onFinished={() => { setShowRecipeModal(false) }} />
+            </Modal>
         </main>
-        <Modal visible={showCreateRecipeModal}>
-            <CreateRecipeForm onFinished={() => { setShowRecipeModal(false) }} />
-        </Modal>
     </>
 }

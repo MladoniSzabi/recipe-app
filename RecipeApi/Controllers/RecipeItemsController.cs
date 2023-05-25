@@ -7,8 +7,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RecipeApi.Models;
 
+class User
+{
+    public String? UserId { set; get; }
+}
+
 namespace RecipeApi.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class RecipeItemsController : ControllerBase
@@ -25,9 +31,10 @@ namespace RecipeApi.Controllers
         [HttpPost("vote/{id}")]
         public async Task<IActionResult> VoteForRecipe(long id)
         {
-            if (Request.Form == null || !Request.Form.ContainsKey("User"))
+            var user = await Request.ReadFromJsonAsync<User>();
+            if (user == null || user.UserId == null || user.UserId == "")
             {
-                return this.BadRequest(new { message = "You must provide a User" });
+                return this.BadRequest(new { message = "You must provide a User", user = user });
             }
             var recipeItem = await _context.RecipeItems.FindAsync(id);
 
@@ -38,11 +45,12 @@ namespace RecipeApi.Controllers
 
             Vote v = new Vote();
             v.Recipe = recipeItem;
-            v.User = Request.Form["User"];
+            v.User = user.UserId;
+            v.Created = DateOnly.FromDateTime(DateTime.Now);
             _context.Votes.Add(v);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("Created Vote", new { id = v.Id }, v);
+            return this.Ok();
         }
 
         // GET: api/RecipeItems
