@@ -16,6 +16,20 @@ public class Vote
     public long Id { get; set; }
     [ForeignKey("RecipeItem")]
     public RecipeItem Recipe { get; set; }
+    public String User { get; set; }
+    public DateOnly Created
+    {
+        get
+        {
+            return this.created.HasValue
+               ? this.created.Value
+               : DateOnly.FromDateTime(DateTime.Now);
+        }
+
+        set { this.created = value; }
+    }
+
+    private DateOnly? created = null;
 }
 
 public class RecipeItem

@@ -25,6 +25,10 @@ namespace RecipeApi.Controllers
         [HttpPost("vote/{id}")]
         public async Task<IActionResult> VoteForRecipe(long id)
         {
+            if (Request.Form == null || !Request.Form.ContainsKey("User"))
+            {
+                return this.BadRequest(new { message = "You must provide a User" });
+            }
             var recipeItem = await _context.RecipeItems.FindAsync(id);
 
             if (recipeItem == null)
@@ -34,6 +38,7 @@ namespace RecipeApi.Controllers
 
             Vote v = new Vote();
             v.Recipe = recipeItem;
+            v.User = Request.Form["User"];
             _context.Votes.Add(v);
             await _context.SaveChangesAsync();
 
