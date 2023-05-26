@@ -17,19 +17,19 @@ public class Vote
     [ForeignKey("RecipeItem")]
     public RecipeItem Recipe { get; set; }
     public String User { get; set; }
-    public DateOnly Created
+    public DateTime Created
     {
         get
         {
             return this.created.HasValue
                ? this.created.Value
-               : DateOnly.FromDateTime(DateTime.Now);
+               : DateTime.Now;
         }
 
         set { this.created = value; }
     }
 
-    private DateOnly? created = null;
+    private DateTime? created = null;
 }
 
 public class RecipeItem

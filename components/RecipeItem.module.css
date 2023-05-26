@@ -43,3 +43,8 @@
 .buttons button:active {
     background-color: #476A64;
 }
+
+.buttons button:disabled {
+    background-color: #555757;
+    cursor: default;
+}

@@ -1,11 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RecipeApi.Models;
+using System.Data;
 
 class User
 {
@@ -26,10 +22,15 @@ namespace RecipeApi.Controllers
             _context = context;
         }
 
-
+        [HttpGet("votes/{userid}")]
+        public async Task<ActionResult<IEnumerable<long>>> GetMyVotes(String userid)
+        {
+            var result = _context.Votes.Where<Vote>(vote => vote.User == userid).Where<Vote>(vote => vote.Created > DateTime.Now.Date).Select(vote => vote.Recipe.Id);
+            return await result.ToListAsync();
+        }
 
         [HttpPost("vote/{id}")]
-        public async Task<IActionResult> VoteForRecipe(long id)
+        public async Task<ActionResult<Vote>> VoteForRecipe(long id)
         {
             var user = await Request.ReadFromJsonAsync<User>();
             if (user == null || user.UserId == null || user.UserId == "")
@@ -46,11 +47,11 @@ namespace RecipeApi.Controllers
             Vote v = new Vote();
             v.Recipe = recipeItem;
             v.User = user.UserId;
-            v.Created = DateOnly.FromDateTime(DateTime.Now);
+            v.Created = DateTime.Now;
             _context.Votes.Add(v);
             await _context.SaveChangesAsync();
 
-            return this.Ok();
+            return await _context.Votes.FindAsync(v.Id);
         }
 
         // GET: api/RecipeItems

@@ -3,8 +3,9 @@ import style from './RecipeItem.module.css'
 import { useAuth } from './Auth'
 
 export type RecipeItem = { id: number, name: string, ingredient: string, method: string, votes: number }
+type ComponentProps = { canVote: boolean, disabled: boolean, item: RecipeItem, onVote: (id: number) => void }
 
-export function RecipeItemComponent({ item, onVote }: { item: RecipeItem, onVote: (id: number) => void }) {
+export function RecipeItemComponent({ disabled, canVote, item, onVote }: ComponentProps) {
 
     const [authToken] = useAuth()
     const [loading, setLoading] = React.useState(false)
@@ -29,12 +30,14 @@ export function RecipeItemComponent({ item, onVote }: { item: RecipeItem, onVote
         })
     }
 
+    const isDisabled = disabled || loading || !canVote
+
     return <div className={style["recipe-item"]}>
         <img src="/img.png" alt="image go brrr" />
         <p className={style["body"]}>{item.name}</p>
         <div className={style["buttons"]}>
             <p>Vote count: {item.votes}</p>
-            <button onClick={vote} disabled={loading}>{loading ? "..." : "Vote"}</button>
+            <button onClick={vote} disabled={isDisabled}>{isDisabled ? "Voted" : "Vote"}</button>
         </div>
     </div>
 }

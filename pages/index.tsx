@@ -6,6 +6,7 @@ import { useAuth } from '../components/Auth'
 
 export default function IndexPage() {
 
+    const [votes, setVotes] = React.useState<Number[]>(null)
     const [recipes, setRecipes] = React.useState<RecipeItem[]>([])
     const [showCreateRecipeModal, setShowRecipeModal] = React.useState(false)
     const [authToken] = useAuth()
@@ -29,6 +30,11 @@ export default function IndexPage() {
                         votes: el.voteCount
                     })))
             })
+        fetch("/api/RecipeItems/votes/" + authToken)
+            .then((res) => res.json())
+            .then((data) => {
+                setVotes(data)
+            })
     }, [])
 
     if (recipes.length == 0) {
@@ -47,7 +53,7 @@ export default function IndexPage() {
         </header>
         <main>
             {recipes.map((el) => (
-                <RecipeItemComponent onVote={onVote} key={el.id} item={el} />
+                <RecipeItemComponent disabled={votes == null} canVote={(votes != null) && (!votes.includes(el.id))} onVote={onVote} key={el.id} item={el} />
             ))}
             <Modal visible={showCreateRecipeModal}>
                 <CreateRecipeForm onFinished={() => { setShowRecipeModal(false) }} />
