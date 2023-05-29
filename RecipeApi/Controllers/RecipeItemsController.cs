@@ -62,6 +62,7 @@ namespace RecipeApi.Controllers
                           join vote in _context.Votes.Where<Vote>(vote => vote.Created >= DateTime.Now.Date) on recipe equals vote.Recipe into votes
                           from vote in votes.DefaultIfEmpty()
                           group vote by recipe into recipeGroup
+                          orderby recipeGroup.Count(v => v != null) descending
                           select new RecipeWithVotes(recipeGroup.Key, recipeGroup.Count(v => v != null));
 
             return await results.ToListAsync();
