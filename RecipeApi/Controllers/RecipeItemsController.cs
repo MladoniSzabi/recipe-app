@@ -59,7 +59,7 @@ namespace RecipeApi.Controllers
         public async Task<ActionResult<IEnumerable<RecipeWithVotes>>> GetRecipeItems()
         {
             var results = from recipe in _context.RecipeItems
-                          join vote in _context.Votes on recipe equals vote.Recipe into votes
+                          join vote in _context.Votes.Where<Vote>(vote => vote.Created >= DateTime.Now.Date) on recipe equals vote.Recipe into votes
                           from vote in votes.DefaultIfEmpty()
                           group vote by recipe into recipeGroup
                           select new RecipeWithVotes(recipeGroup.Key, recipeGroup.Count(v => v != null));
