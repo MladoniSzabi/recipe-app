@@ -15,6 +15,7 @@ export default function IndexPage() {
         let recipeItem = recipes.find((recipe) => { console.log(recipe); return recipe.id == itemId; })
         recipeItem.votes += 1
         setRecipes((oldRecipes) => oldRecipes.map(el => el.id == itemId ? recipeItem : el))
+        setVotes((oldVotes) => [...oldVotes, itemId])
     }
 
     React.useEffect(() => {
