@@ -5,10 +5,23 @@ namespace RecipeApi.Models;
 
 public class RecipeWithVotes
 {
-    public RecipeItem Recipe { get; set; }
+    public long RecipeId { get; set; }
+    [Required(AllowEmptyStrings = false)]
+    public String Name { get; set; }
+    [Required(AllowEmptyStrings = false)]
+    public String Ingredient { get; set; }
+    [Required(AllowEmptyStrings = false)]
+    public String Method { get; set; }
     public int VoteCount { get; set; }
 
-    public RecipeWithVotes(RecipeItem _recipe, int _count) => (Recipe, VoteCount) = (_recipe, _count);
+    public RecipeWithVotes(RecipeItem _recipe, int _count)
+    {
+        RecipeId = _recipe.Id;
+        Name = _recipe.Name;
+        Ingredient = _recipe.Ingredient;
+        Method = _recipe.Method;
+        VoteCount = _count;
+    }
 }
 
 public class Vote
@@ -41,4 +54,5 @@ public class RecipeItem
     public String Ingredient { get; set; }
     [Required(AllowEmptyStrings = false)]
     public String Method { get; set; }
+    public byte[]? Image { get; set; }
 }

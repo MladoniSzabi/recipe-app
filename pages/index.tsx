@@ -24,10 +24,10 @@ export default function IndexPage() {
             .then((data) => {
                 setRecipes(data.map((el) => (
                     {
-                        id: el.recipe.id,
-                        name: el.recipe.name,
-                        ingredient: el.recipe.ingredient,
-                        method: el.recipe.method,
+                        id: el.id,
+                        name: el.name,
+                        ingredient: el.ingredient,
+                        method: el.method,
                         votes: el.voteCount
                     })))
             })
