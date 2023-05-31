@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RecipeApi.Models;
+using SixLabors.ImageSharp;
 using System.Data;
 
 class User
@@ -11,6 +12,7 @@ class User
 namespace RecipeApi.Controllers
 {
 
+    [System.Runtime.Versioning.SupportedOSPlatform("linux")]
     [Route("api/[controller]")]
     [ApiController]
     public class RecipeItemsController : ControllerBase
@@ -116,12 +118,30 @@ namespace RecipeApi.Controllers
         // POST: api/RecipeItems
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<RecipeItem>> PostRecipeItem(RecipeItem recipeItem)
+        [Consumes("multipart/form-data")]
+        public async Task<ActionResult<RecipeItem>> PostRecipeItem([FromForm] RecipeItemCreate recipeItem)
         {
-            _context.RecipeItems.Add(recipeItem);
+            RecipeItem r = new RecipeItem();
+            r.Id = recipeItem.Id;
+            r.Name = recipeItem.Name;
+            r.Ingredient = recipeItem.Ingredient;
+            r.Method = recipeItem.Method;
+            if (recipeItem.Image != null && recipeItem.Image.Length > 2 * 1024 * 1024)
+            {
+                return BadRequest(new { error = "Image cannot exceed 2MB" });
+            }
+            if (recipeItem.Image != null)
+            {
+                var image = Image.Load(recipeItem.Image.OpenReadStream());
+                var writestream = new MemoryStream();
+                await image.SaveAsPngAsync(writestream);
+                r.Image = writestream.GetBuffer();
+                writestream.Close();
+            }
+            _context.RecipeItems.Add(r);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetRecipeItem), new { id = recipeItem.Id }, recipeItem);
+            return CreatedAtAction(nameof(GetRecipeItem), new { id = r.Id }, r);
         }
 
         // DELETE: api/RecipeItems/5

@@ -56,3 +56,16 @@ public class RecipeItem
     public String Method { get; set; }
     public byte[]? Image { get; set; }
 }
+
+public class RecipeItemCreate
+{
+    public long Id { get; set; }
+    [Required(AllowEmptyStrings = false)]
+    public String Name { get; set; }
+    [Required(AllowEmptyStrings = false)]
+    public String Ingredient { get; set; }
+    [Required(AllowEmptyStrings = false)]
+    public String Method { get; set; }
+    public IFormFile? Image { get; set; }
+
+}
