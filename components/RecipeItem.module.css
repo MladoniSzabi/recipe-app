@@ -6,6 +6,7 @@
     background-color: #223036;
     border-radius: 20px;
     align-items: center;
+    cursor: pointer;
 }
 
 .recipe-item .body {
@@ -47,4 +48,11 @@
 .buttons button:disabled {
     background-color: #555757;
     cursor: default;
+}
+
+.recipe-content {
+    height: auto;
+    position: relative;
+    overflow: hidden;
+    transition: height 1s;
 }
