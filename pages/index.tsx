@@ -18,6 +18,11 @@ export default function IndexPage() {
         setVotes((oldVotes) => [...oldVotes, itemId])
     }
 
+    function onNewRecipeAdded(newRecipe) {
+        setShowRecipeModal(false)
+        setRecipes((oldRecipes) => [newRecipe, ...oldRecipes])
+    }
+
     React.useEffect(() => {
         fetch('/api/RecipeItems')
             .then((res) => res.json())
@@ -57,7 +62,7 @@ export default function IndexPage() {
                 <RecipeItemComponent disabled={votes == null} canVote={(votes != null) && (!votes.includes(el.id))} onVote={onVote} key={el.id} item={el} />
             ))}
             <Modal visible={showCreateRecipeModal}>
-                <CreateRecipeForm onFinished={() => { setShowRecipeModal(false) }} />
+                <CreateRecipeForm onFinished={onNewRecipeAdded} />
             </Modal>
         </main>
     </>

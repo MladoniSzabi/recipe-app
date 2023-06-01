@@ -14,7 +14,7 @@ export default function CreateRecipeForm({ onFinished }) {
             }).then((response) => {
                 console.log(response.status)
                 if (response.status >= 200 && response.status < 300) {
-                    onFinished()
+                    response.json().then((value) => onFinished({ ...value, votes: 0 }))
                 }
             });
         }
