@@ -5,3 +5,5 @@ Dockerfile
 RecipeApi
 .next
 .vscode
+docker-compose.yml
+nginx
