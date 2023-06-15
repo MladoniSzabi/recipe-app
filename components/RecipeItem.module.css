@@ -20,7 +20,6 @@
 .buttons {
     display: flex;
     flex-direction: column;
-    width: 10%;
     max-width: 10em;
     flex-shrink: 0;
 }
@@ -55,4 +54,11 @@
     position: relative;
     overflow: hidden;
     transition: height 1s;
+}
+
+@media (max-width: 400px) {
+    .recipe-item img {
+        height: auto;
+        max-width: 15vw;
+    }
 }
