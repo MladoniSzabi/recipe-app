@@ -49,6 +49,10 @@ export default function IndexPage() {
         </main>
     }
 
+    function closeModal() {
+        setShowRecipeModal(false)
+    }
+
     return <>
         <header>
             <button onClick={() => { setShowRecipeModal(true) }}>
@@ -61,7 +65,7 @@ export default function IndexPage() {
             {recipes.map((el) => (
                 <RecipeItemComponent disabled={votes == null} canVote={(votes != null) && (!votes.includes(el.id))} onVote={onVote} key={el.id} item={el} />
             ))}
-            <Modal visible={showCreateRecipeModal}>
+            <Modal visible={showCreateRecipeModal} onClosed={closeModal}>
                 <CreateRecipeForm onFinished={onNewRecipeAdded} />
             </Modal>
         </main>

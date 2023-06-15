@@ -20,3 +20,13 @@
 .modal-hidden {
     display: none;
 }
+
+.modal-close {
+    display: flex;
+    justify-content: end;
+    margin-bottom: 1em;
+}
+
+.modal-close * {
+    cursor: pointer;
+}
